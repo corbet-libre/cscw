@@ -99,7 +99,8 @@ async fn server(replies: Vec<String>) -> (String, tokio::task::JoinHandle<Vec<St
     (url, task)
 }
 fn payments(url: String, mode: cost::Mode) -> Payments<MemoryJournal> {
-    let mut payments = Payments::new(MemoryJournal::default(), [9; 32]).unwrap();
+    let mut payments =
+        Payments::new(MemoryJournal::default(), [9; 32], std::sync::Arc::new(|| 0)).unwrap();
     let client = stripe::ClientBuilder::new("sk_test_fixture")
         .url(url)
         .build()

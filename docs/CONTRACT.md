@@ -31,3 +31,13 @@ I/O/credentials and cannot construct production results. Sandbox does not mean
 free and cannot grant production evidence. Tests use maintained upstream code
 with inert fixtures; all live/paid/hardware cases are unexecuted. Safe Rust is
 required for owned code, with no custom cryptographic primitive or SDK fork.
+
+Use the shared live `cost::Clock` and caller Journal deadline contract. A delayed
+reservation must not dispatch after expiry. Unexpected authenticated charges
+remain in the shared cost violation record, and final caller-state write failures
+remain visible through `Execution::commit_error` with an Unknown outcome. Both
+block proof/fallback and require host reconciliation. The original smaller
+reservation alone is not a complete report of unexpected exposure.
+
+The [capability catalogue](CATALOGUE.md) documents implemented composition and
+future deposit operations without enabling accounts or inventing deposit policy.
