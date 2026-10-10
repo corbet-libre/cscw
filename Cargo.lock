@@ -176,7 +176,7 @@ checksum = "a6ef517f0926dd24a1582492c791b6a4818a4d94e789a334894aa15b0d12f55c"
 [[package]]
 name = "cpmt"
 version = "0.2.0"
-source = "git+https://git.corbet.ch/corbet-foss/cpmt?branch=main#5360e5b53d21c807434ec32aef8020e50d7ca231"
+source = "git+https://git.corbet.ch/corbet-foss/cpmt?branch=main#96f80f135c0e9115961e09327729c408884c0fd0"
 dependencies = [
  "async-stripe",
  "async-stripe-client-core",
