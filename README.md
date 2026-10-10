@@ -1,36 +1,52 @@
 # cscw
 
-**Deposit admission gate for cvld.**
+Reusable deposit operations through `cpmt` and `crpt` payment adapters. The caller
+authorizes the financial instruction; this library returns what the adapter
+actually established. It never chooses when a deposit is required, released or
+forfeited, and it holds no funds or wallet keys.
 
-`cscw` will implement the escrow rule behind a deposit gate: when a deposit is held, released or forfeited. It rests on us and the member alone, not on a third party.
+`execute` consumes the shared payment cost permit and delegates exactly once to
+`Payments::dispatch_with_output`. `Deposit::fact` projects fully established
+financial terms into held, collected, released or returned. Pending, uncertain,
+failed and unqualified results remain distinct. Generic x402 settlement is not
+silently interpreted as a deposit hold: the selected scheme must establish the
+specific financial effect through a suitable adapter.
 
-Status: name reserved, no implementation or qualified provider adapter yet.
-Empty production coverage is a blocking failure. See
-[the current contract](docs/CONTRACT.md).
+`Deposit::evidence` produces only an authenticated, context-bound production fact.
+Partial amounts, unknown terms, sandbox results and dummy simulations cannot
+produce deposit proof. Caller rules decide what that fact permits. `payment` and
+`into_payment` expose the full general result, including explicitly requested
+private provider details, without introducing an alternative payment engine.
 
-One gate invocation performs one provider check; `cfbk` owns ordering and
-fallback, with requirements supplied by `crbk`.
+Configure real adapters, credentials, endpoints and modes in `cpmt` or `crpt`.
+No provider is enabled by including this crate. `Payments::preview` takes a
+trusted bounded service-fee tariff with provenance/expiry; the shared `cost`
+planner checks the whole-cascade budget and binds a permit to the actual terms.
+Principal and service fees are separate. Reads use fresh observation instructions
+and their own permits. Unknown/ambiguous results retain reserved exposure and
+never trigger an automatic new charge.
 
-## Boundaries
+All data in this library stays in RAM. There is no SQL, database connection,
+file cache or persistent SDK session. The host implements the payment `Journal`
+contract, atomically reserving operation identity and fee budget across processes
+and restarts. It receives only the minimal operational record, not raw requests
+or complete provider results. [The contract](docs/CONTRACT.md) describes the
+boundaries and [cpmt credential documentation](https://git.corbet.ch/corbet-foss/cpmt/src/branch/main/docs/CREDENTIALS.md)
+covers account provisioning and replacement separately from stable identity keys.
 
-What it does:
+`simulation::simulate` exercises shared cost/fallback planning with explicit
+dummy outcomes. `simulate_fact` exercises this crate's actual deposit projection
+and returns a distinct non-proof type. Neither accepts credentials or a transport.
+Sandbox is separate and still requires a cost authorization; it is not assumed
+free. `run` and `cost` re-export the maintained shared orchestration rather than
+creating a second fallback implementation.
 
-- Decides hold, release and forfeit of a deposit and returns an opaque gate proof.
+Tests use the real maintained Stripe SDK against inert loopback responses for
+hold, capture and refund, plus mismatched financial amounts, context binding,
+replays, private results and sandbox refusal. No live provider account, chain
+transaction, sandbox ceremony or paid call is run. Fixture coverage does not
+qualify any production provider account. Owned Rust forbids unsafe code;
+dependencies use compatible ranges, and the lockfile records the tested graph.
 
-What it never does:
-
-- Never moves money itself: payments go through `cpmt` (fiat) or `crpt` (crypto).
-- No payment details in output, logs, errors or fixtures.
-
-## License
-
-Copyright 2026 Julian Y. Richard Corbet. Licensed under
-[LGPL-3.0-only](LICENSES/LGPL-3.0-only.txt)
-[WITH LGPL-3.0-linking-exception](LICENSES/LGPL-3.0-linking-exception.txt).
-See [LICENSE.md](LICENSE.md).
-
-## Continuous verification
-
-Dependency updates follow main and are tested against one CI-resolved lockfile.
-Line and branch coverage target 100%; failures remain blocking. See
-[the coverage contract](docs/COVERAGE.md) for measurement and exclusions.
+Licensed LGPL-3.0-only WITH LGPL-3.0-linking-exception. No registry publication is
+part of this implementation.

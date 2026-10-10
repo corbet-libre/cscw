@@ -11,7 +11,10 @@ export RUSTUP_TOOLCHAIN="${RUSTUP_TOOLCHAIN:-stable}"
 export RUNNER_TEMP="${RUNNER_TEMP:-$(mktemp -d)}"
 export GITHUB_PATH="${GITHUB_PATH:-$RUNNER_TEMP/github_path}"
 touch "$GITHUB_PATH"
+cargo update
+cp Cargo.lock "$ARTIFACT_ROOT/Cargo.lock"
 python3 .github/check-first-party.py
+cargo deny --all-features check advisories
 cargo fmt --all -- --check
 cargo clippy --locked --all-targets -- -D warnings
 cargo test --locked
@@ -35,5 +38,6 @@ export CARGO_TARGET_DIR="$coverage_target"
 "$NIGHTLY_CARGO" llvm-cov report --locked --branch --ignore-filename-regex '/tests/' --lcov --output-path coverage.lcov
 "$NIGHTLY_CARGO" llvm-cov report --locked --branch --ignore-filename-regex '/tests/' --text --output-path coverage.txt
 )
+cp coverage.json coverage.lcov coverage.txt "$ARTIFACT_ROOT/"
 python3 .github/test-source-coverage.py
 python3 .github/check-source-coverage.py coverage.lcov coverage.json coverage.txt
