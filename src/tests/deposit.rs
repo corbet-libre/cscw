@@ -126,7 +126,7 @@ async fn real_sdk_hold_capture_and_refund_preserve_domain_meaning_and_private_re
         r#"{"id":"re_fixture","object":"refund","status":"succeeded","amount":1200,"currency":"chf"}"#.into(),
     ]).await;
     let payments = payments(url, cost::Mode::Production);
-    let mut requests = vec![
+    let mut requests = [
         instruction(
             1,
             "stripe.intent.create",
