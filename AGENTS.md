@@ -10,7 +10,7 @@
 - Prefer maintained upstream safe Rust. Owned crates forbid unsafe code. Use
   compatible dependency ranges and first-party main branches, no exact pins.
 - No live provider calls, spending, registrations, deployment or publication.
-- Workstations edit/format; Crow compiles/tests committed candidates. Preserve
+- Local checkouts edit/format; Crow compiles/tests committed candidates. Preserve
   coverage/quality gates and obtain independent review before completion claims.
 - Comments/docs are English. LGPL-3.0-only WITH LGPL-3.0-linking-exception; no
   GPL/AGPL-only dependency implementation. Commit explicit paths, no AI credit.
