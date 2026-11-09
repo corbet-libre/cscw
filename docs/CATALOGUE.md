@@ -20,8 +20,8 @@ private transient data, and a generic settlement is not silently a deposit hold.
 | BTCPay / CoinGate / generic x402 through crpt | General payment results remain available through `payment` / `into_payment` | Generic Settled is deliberately Unqualified as a deposit fact. A protocol-specific adapter must establish the exact requested held/collected/released/refunded effect before this projection applies. |
 
 Exact implemented operations and credential requirements live in the
-[cpmt provider contract](https://git.corbet.ch/corbet-foss/cpmt/src/branch/main/docs/PROVIDERS.md)
-and [crypto catalogue](https://git.corbet.ch/corbet-foss/crpt/src/branch/main/docs/CATALOGUE.md).
+[cpmt provider contract](https://git.corbet.ch/corbet-libre/cpmt/src/branch/main/docs/PROVIDERS.md)
+and [crypto catalogue](https://git.corbet.ch/corbet-libre/crpt/src/branch/main/docs/CATALOGUE.md).
 These are reusable integrations, not live account certifications. No live or
 provider-sandbox deposit was executed.
 

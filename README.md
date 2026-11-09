@@ -32,7 +32,7 @@ contract, atomically reserving operation identity and fee budget across processe
 and restarts. It receives only the minimal operational record, not raw requests
 or complete provider results. [The capability catalogue](docs/CATALOGUE.md) separates implemented composition
 from candidate deposit workflows. [The contract](docs/CONTRACT.md) describes the
-boundaries and [cpmt credential documentation](https://git.corbet.ch/corbet-foss/cpmt/src/branch/main/docs/CREDENTIALS.md)
+boundaries and [cpmt credential documentation](https://git.corbet.ch/corbet-libre/cpmt/src/branch/main/docs/CREDENTIALS.md)
 covers account provisioning and replacement separately from stable identity keys.
 
 `simulation::simulate` exercises shared cost/fallback planning with explicit
